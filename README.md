@@ -1,128 +1,128 @@
-**General Note on the project:**
+# 🎓 Transfer Certificate Generator
 
-This project is a Transfer Certificate (TC) Generator System built using Python and libraries like CustomTkinter for the GUI, PIL (Python Imaging Library) for image manipulation, Report Lab for generating PDFs, and CSV for handling data storage and retrieval.
+A desktop application for managing student Transfer Certificate (TC) requests in a school setting — from submission to approval to PDF generation.
 
-The main goal of this project is to manage student data and allow users to generate transfer certificates by submitting TC requests for approval and letting the principal approve or reject those requests.
+---
 
+## Overview
 
+This system streamlines the TC workflow between school admins and the principal. Admins submit TC requests for students; the principal reviews and approves or rejects them. Approved certificates are automatically generated as formatted PDFs.
 
+---
 
+## Features
 
-**Brief Sequence of Program:**
+- 🔐 Role-based login — separate flows for **Admin** and **Principal**
+- 📋 TC request submission with student detail validation
+- ✅ Principal approval / rejection workflow
+- 📄 Auto-generated PDF Transfer Certificates (with school header, logo, and signature fields)
+- 🔑 Password reset functionality
+- 💾 CSV-based data storage — no database required
 
-The application begins with a login interface where users enter their username and password.
+---
 
-Two types of users (Admin and Principal) are supported. Admin can log in and generate requests for creating transfer certificates. Principal can log in to approve or reject these requests. The credentials are stored in a CSV file (Data.csv), which the system verifies during login.
+## Tech Stack
 
-Once logged in, users can submit transfer certificate requests by filling out a form with student details such as Admission No, Promoted to, Date of Application, Date of Issue and Reason for availing. The system verifies the student's admission number from the CSV file (Data.csv) and stores the request in another file (Pending\_TCs.csv) with the status of "Pending."
+| Purpose | Library |
+|---|---|
+| GUI | `CustomTkinter` |
+| PDF Generation | `ReportLab` |
+| Image Handling | `Pillow (PIL)` |
+| Data Storage | `csv` (built-in) |
 
-Principals can log in and view a list of pending TC requests. They can either approve or reject these requests. Upon approval, the system generates a PDF transfer certificate, stores the data and removes the request from the pending list.
+---
 
-The system uses the ReportLab library to generate a formal Transfer Certificate in PDF format, complete with school headers, student details, and provision for signatures. It also includes a formal border and a school logo.
+## How It Works
 
-If a user forgets their password, they can reset it using a password reset functionality. The new password is updated in the Data.csv file after proper validation
+### Step 1 — Login
+When the application starts, both the Admin and the Principal land on the same login screen. They enter their username and password, which are verified against `Data.csv`. Based on the role, the system routes them to their respective dashboard. If a user forgets their password, they can reset it directly from the login screen.
 
-This project provides a simple yet effective system to manage transfer certificates in a school setting, ensuring that all records are well-maintained and automating the process of certificate generation and approval.
+---
 
+### Step 2 — Admin Submits a TC Request
+Once logged in, the Admin opens the **TC Generator** form and fills in the student's details:
 
+- Admission Number *(validated against `Data.csv` — an error is shown if it doesn't exist)*
+- Class the student is promoted to
+- Fees concession details
+- Date of application and date of issue
+- Reason for leaving the school
 
-**USER-DEFINED FUNCTIONS**
+On submission, the request is saved to `Pending_TCs.csv` with a **"Pending"** status and waits for the Principal's review.
 
+---
 
+### Step 3 — Principal Reviews the Request
+The Principal logs in and opens the **TC Approval** panel, which loads all pending requests from `Pending_TCs.csv`. Requests are shown one at a time. The Principal can:
 
-**1. userlogin():**
+- **Approve** — triggers PDF generation, removes the record from `Pending_TCs.csv`, and deletes the student's entry from `Data.csv`
+- **Reject** — marks the request accordingly in `Pending_TCs.csv`
 
-It consists of the code to create the user login window which allows the user to enter the username and password. It also allows the user to reset the password by opening the reset password window. 
+---
 
+### Step 4 — PDF is Generated
+On approval, the system automatically creates a formatted Transfer Certificate as a PDF file, saved in the project folder. The certificate includes all student details, school header, logo, a formal border, and signature fields for the Principal.
 
+---
 
-**2. reset\_password():**
+## UI Overview
 
-It is used to create the reset password window. It collects the username, new password and confirm password. 
+| Screen | Description |
+|---|---|
+| **Login** | Username/password entry with a password reset option |
+| **Admin Dashboard** | Access to TC Generator and logout |
+| **TC Generator Form** | Fields: Admission No, Promoted To, Fees Concession, Date of Application, Date of Issue, Reason for Leaving |
+| **Principal Dashboard** | Access to TC Approval panel and logout |
+| **TC Approval Panel** | Displays pending requests one at a time with Approve / Reject buttons |
 
+---
 
+## Generated PDF Contains
 
-**3. update\_password():**
+- School name, logo, and formal border
+- Student name, father/guardian's name, mother's name
+- Nationality, admission number
+- Last class studied and subjects
+- Class promoted to
+- Fees concession details
+- Date of application and date of issue
+- Reason for leaving
+- Signature fields for the principal
 
-If the new password matches the confirm password, then the new password is updated in the data.csv file and a message is displayed. If the confirm password doesn’t match the new password, then an error message is displayed. 
+PDFs are saved to the project root directory.
 
+---
 
+## Function Reference
 
-**4. collect\_input():**
-
-It assigns the user-given input to identifiers. Through the collect\_input defined inside the user login function, an error message is displayed if either the username is invalid or the password doesn’t match the username. It opens the main page window when the username matches the password. Through the collect\_input defined inside the tc function, the admission number provided by the admin is checked to see whether it matches the admission number in Data.csv. If it doesn’t match, an error message is generated. If it matches, the data is stored in pending\_TCs.csv for seeking approval from the principal.
-
-
-
-**5. mainpage2():**
-
-It is the main page window which opens when the principal id is logged in. It provides two functionality-  approval and logout.
-
-
-
-**6. mainpage1():**
-
-It is the main page window which opens when the admin id is logged in. It provides two functionality- TC generator and logout.
-
-
-
-**7. open\_tc\_generator():** 
-
-It is defined to call the tc function.
-
-
-
-**8. open\_tc\_approval():**
-
-It is defined to call the principal\_approve function.
-
-
-
-**9. tc():**
-
-It opens the TC Generator window where details like Admission No, Promoted to, Fees concession, Date of application, Date of issue and Reason for leaving are asked. 
-
-
-
-**10. principal\_approve(main\_page\_callback, mainpage2):**
-
-It loads the TC request generated by the admin and asks the principal to either approve or reject it. If no request is available then the text ‘No pending requests’ is displayed. It also allows the principal to return to the main page.
-
-
-
-**11. load\_pending\_requests():**
-
-It loads all the records available in pending\_TCs.csv.
-
-
-
-**12. approve\_tc(admission\_no, info\_label, approve\_button, reject\_button):**
-
-If the principal clicks the approve button, then this function is called. It checks for the admission number in the Data.csv file. The create\_pdf function is called and the record is deleted from the Data.csv and pending\_TCs.csv.
-
-
-
-**13. reject\_tc(admission\_no, info\_label, approve\_button, reject\_button):**
-
-If the principal clicks the reject button, then the record is marked as pending in the pending\_TCs.csv.
-
-
-
-**14. save\_requests\_to\_file(requests):**
-
-It saves the updated record back into the pending\_TCs.csv.
-
-
-
-**15. create\_pdf(d,data):**
-
-It is defined to create the Transfer Certificate of the student in pdf format. The pdf contains details like the Name of Student, Father/Guardian’s Name, Mother’s Name, Nationality, Student Admission no, Class in which the student last studied, Subjects studied, To which class he/she qualified, Any fees concession availed, Date of Application for Certificate, Date of issue for Certificate and Reasons for leaving the school. The pdf is saved in the location where the code is stored.
-
-
-
-**16. logout():**
-
-It is used to log out and open the user login page.
-
-
-
+| Function | Role |
+|---|---|
+| `userlogin()` | Renders the login window; validates credentials from `Data.csv` |
+| `reset_password()` | Opens the password reset window |
+| `update_password()` | Validates and updates the new password in `Data.csv` |
+| `collect_input()` | Handles input from login and TC forms; validates admission numbers |
+| `mainpage1()` | Admin dashboard — TC Generator and logout |
+| `mainpage2()` | Principal dashboard — TC Approval and logout |
+| `open_tc_generator()` | Calls `tc()` |
+| `open_tc_approval()` | Calls `principal_approve()` |
+| `tc()` | TC request form window |
+| `principal_approve()` | Loads and displays pending TC requests for review |
+| `load_pending_requests()` | Reads all records from `Pending_TCs.csv` |
+| `approve_tc()` | Triggers PDF generation, removes record from both CSV files |
+| `reject_tc()` | Marks the request status in `Pending_TCs.csv` |
+| `save_requests_to_file()` | Writes updated records back to `Pending_TCs.csv` |
+| `create_pdf()` | Generates the formatted Transfer Certificate PDF |
+| `logout()` | Clears session and returns to the login screen |
+
+---
+
+## Data Files
+
+| File | Purpose |
+|---|---|
+| `Data.csv` | Stores user credentials and student records |
+| `Pending_TCs.csv` | Tracks TC requests and their approval status |
+
+---
+
+⭐ If you found this project helpful, consider leaving a star — it means a lot!
