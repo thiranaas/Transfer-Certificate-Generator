@@ -188,7 +188,7 @@ def principal_approve(main_page_callback,mainpage2):
 
 def create_pdf(d,data):
     admission_no, promoted_to, fees_concession, date_of_application, date_of_issue, reason_for_leaving, _ = d
-    school_info = {"name": "D.A.V. PUBLIC SCHOOL, VELACHERY", "address": "19, Sitaram Nagar, Velachery, Chennai - 42", "code": "123456"}
+    school_info = {"name": "ABC School", "address": "address", "code": "123456"}
     
    # Define the PDF file name
     file_name = f"{data[0]}_Transfer_Certificate.pdf"
@@ -206,7 +206,7 @@ def create_pdf(d,data):
     normal_style = ParagraphStyle('Normal',parent=styles['Normal'], fontName='Times-Roman', fontSize=12, alignment=4)
 
      # Add the school logo
-    logo_path="images/school logo.jfif"
+    logo_path="images/school logo.jpg"
     logo = Image(logo_path)
     logo.drawHeight=1*inch
     logo.drawWidth=1*inch
