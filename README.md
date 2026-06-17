@@ -125,4 +125,4 @@ PDFs are saved to the project root directory.
 
 ---
 
-⭐ If you found this project helpful, consider leaving a star — it means a lot!
+If you found this project helpful, consider leaving a star ⭐!
